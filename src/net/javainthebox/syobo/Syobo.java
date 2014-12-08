@@ -32,16 +32,21 @@ public class Syobo extends Application {
         Group root = new Group();
         initImage(root);
 
+        // Scene をスクリーンと同サイズに設定
         Screen screen = Screen.getPrimary();
         Scene scene = new Scene(root, screen.getBounds().getWidth(), screen.getBounds().getHeight());
+        // 背景を透過にする
         scene.setFill(null);
+        // カーソルを表示しない
         scene.setCursor(Cursor.NONE);
 
         stage.setScene(scene);
+        // 透明ステージにする
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setAlwaysOnTop(true);
         stage.show();
 
+        // Swing の EDT でタイマ処理を行う
         startSwingEDT();
     }
 

@@ -23,7 +23,7 @@ public class Syobo extends Application {
 
     private static final double DISTANCE = 5.0;
     private static Rotate rotate = new Rotate(180, 16.0, 16.0, 0.0, new Point3D(0.0, 1.0, 0.0));
-    
+
     private ImageView cursor;
     private ImageView syobochim;
 
@@ -58,18 +58,12 @@ public class Syobo extends Application {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Timer timer = new Timer(50, new ActionListener() {
-                    @Override
-                    public void actionPerformed(java.awt.event.ActionEvent event) {
-                        final PointerInfo info = MouseInfo.getPointerInfo();
+                Timer timer = new Timer(50, e -> {
+                    final PointerInfo info = MouseInfo.getPointerInfo();
 
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateLocation(info.getLocation().getX(), info.getLocation().getY());
-                            }
-                        });
-                    }
+                    Platform.runLater(() -> {
+                        updateLocation(info.getLocation().getX(), info.getLocation().getY());
+                    });
                 });
                 timer.start();
             }
@@ -84,24 +78,24 @@ public class Syobo extends Application {
         double ty = syobochim.getTranslateY();
 
         // 近傍であれば位置の更新を行わない
-        double d = (mx - tx)*(mx - tx) + (my - ty)*(my - ty);
-        if (d < DISTANCE*DISTANCE) {
+        double d = (mx - tx) * (mx - tx) + (my - ty) * (my - ty);
+        if (d < DISTANCE * DISTANCE) {
             return;
         }
-        
+
         // カーソルとsyobochimの角度を算出
         double theta = Math.atan2(my - ty, mx - tx);
-        
+
         // 移動分を算出
         double dx = DISTANCE * Math.cos(theta);
         double dy = DISTANCE * Math.sin(theta);
         syobochim.setTranslateX(tx + dx);
         syobochim.setTranslateY(ty + dy);
-        
+
         // 角度に応じて回転
         // カーソルの右側にsyobocimが位置している場合は反転
         syobochim.getTransforms().removeIf(trans -> trans.equals(rotate));
-        if (theta > PI/2.0 || theta < -PI/2.0) {
+        if (theta > PI / 2.0 || theta < -PI / 2.0) {
             syobochim.getTransforms().add(rotate);
             syobochim.setRotate(theta * 180.0 / PI - 180.0);
         } else {

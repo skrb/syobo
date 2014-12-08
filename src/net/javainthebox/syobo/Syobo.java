@@ -59,7 +59,7 @@ public class Syobo extends Application {
             @Override
             public void run() {
                 Timer timer = new Timer(50, e -> {
-                    final PointerInfo info = MouseInfo.getPointerInfo();
+                    PointerInfo info = MouseInfo.getPointerInfo();
 
                     Platform.runLater(() -> {
                         updateLocation(info.getLocation().getX(), info.getLocation().getY());

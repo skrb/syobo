@@ -55,18 +55,12 @@ public class Syobo extends Application {
 
     private void startSwingEDT() {
         // AWTでマウスの位置を 50 秒ごとに検出
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Timer timer = new Timer(50, e -> {
-                    PointerInfo info = MouseInfo.getPointerInfo();
-
-                    Platform.runLater(() -> {
-                        updateLocation(info.getLocation().getX(), info.getLocation().getY());
-                    });
-                });
-                timer.start();
-            }
+        SwingUtilities.invokeLater(() -> {
+            Timer timer = new Timer(50, e -> {
+                PointerInfo info = MouseInfo.getPointerInfo();
+                Platform.runLater(() -> updateLocation(info.getLocation().getX(), info.getLocation().getY()));
+            });
+            timer.start();
         });
     }
 
